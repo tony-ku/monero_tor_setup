@@ -1,0 +1,25 @@
+# /etc/systemd/system/monero.service
+
+[Unit]
+Description=Monero Daemon
+After=network.target
+Wants=network.target
+
+[Service]
+ExecStart=/opt/monero/monerod --detach --config-file /etc/monero.conf --pidfile /run/monero/monerod.pid
+ExecStartPost=/bin/sleep 0.1
+Type=forking
+PIDFile=/run/monero/monerod.pid
+
+Restart=always
+RestartSec=16
+
+User=monero
+Group=monero
+RuntimeDirectory=monero
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
